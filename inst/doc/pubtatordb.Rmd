@@ -1,0 +1,144 @@
+---
+title: "pubtatordb"
+author: "Zachary Colburn"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Overview
+
+[PubTator](https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/PubTator/) is an NCBI product that contains detailed annotations of abstracts found on PubMed. This makes it a very useful research tool. While PubTator does provide an API, the use of an API is inconvenient for high-throughput analyses and also requires a guaranteed internet connection. Querying a local PubTator database is better suited for high-throughput analyses. The package pubtatordb makes it easy to quickly start using a local copy of PubTator's data.
+
+
+## Installation
+
+You can install the released version of pubtatordb from [CRAN](https://CRAN.R-project.org) with:
+
+```{r, eval=FALSE}
+install.packages("pubtatordb")
+```
+
+
+The version on GitHub can be downloaded using the devtools package with:
+
+```{r, eval=FALSE}
+install.packages("devtools")
+devtools::install_github("mamc-dci/pubtatordb")
+```
+
+
+## Example
+
+
+Load the package.
+```{r message=FALSE, warning=FALSE}
+# Load the package.
+library(pubtatordb)
+```
+
+
+After loading the package, database setup and querying can be accomplished in four steps.
+
+- Data download
+- Database setup
+- Connect to the database
+- Query the database
+
+
+After the user manually creates a folder to store the data, the user can define the path to that folder and then download the data to that location:
+```{r, eval=FALSE}
+# Download the data.
+# Use the full path. Writing to the temp directory is not recommended.
+download_dir <- tempdir()
+download_pt(download_dir)
+```
+
+
+After defining the path to the download directory created above, the database can be created with:
+```{r, eval=FALSE}
+# Define the data directory, a subdirectory of the above directory.
+pubtator_path <- file.path(download_dir, "PubTator")
+
+# Create the database.
+pt_to_sql(
+  pubtator_path,
+  skip_behavior = FALSE,
+  remove_behavior = TRUE
+)
+```
+
+
+If the .gz files from PubTator have already been extracted, their extraction can be skipped with the **skip_behavior** argument. After their insertion into the database, both the .gz and uncompressed files can be removed using the **remove_behavior** argument.
+
+
+A connection can be created to the database using **pt_connector**. Note that this is a wrapper for the **dbConnect** function of the DBI package.
+```{r, eval=FALSE}
+# Create a connection to the database.
+db_con <- pt_connector(pubtator_path)
+```
+
+
+Querying the data is accomplished using the **pt_select** function. The first five rows of the gene table can be selected with:
+```{r, eval=FALSE}
+# Query the data.
+pt_select(
+  db_con,
+  "gene",
+  columns = NULL,
+  keys = NULL,
+  keytype = NULL,
+  limit = 5
+)
+```
+
+
+The first five results for PMIDs in which the genes with ENTREZ IDs 7356 or 4199 were mentioned can be selected with:
+```{r, eval=FALSE}
+# Query the data.
+pt_select(
+  db_con,
+  "gene",
+  columns = c("PMID", "ENTREZID"),
+  keys = C("7356", "4199"),
+  keytype = "ENTREZID",
+  limit = 5
+)
+```
+
+
+## Other tables
+PubTator has several datasets. The names of tables in the database can be obtained with:
+
+
+```{r, eval=FALSE}
+pt_tables(db_con)
+```
+
+
+The column names for a particular table can be accessed with:
+```{r, eval=FALSE}
+pt_columns(db_con, "species")
+```
+
+
+## Note
+The citation information for PubTator can be found on the [PubTator](https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/PubTator/) website or with:
+```{r}
+pubtator_citations()
+```
+
+
+## Disclaimer
+The views expressed are those of the author(s) and do not reflect the official policy of the Department of the Army, the Department of Defense or the U.S. Government.
