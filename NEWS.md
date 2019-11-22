@@ -1,3 +1,3 @@
-# pubtatordb 0.1.3
+# pubtatordb 0.1.4
 
-* Examples for unexported functions were removed.
+* Fixed typographic errors.

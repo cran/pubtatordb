@@ -5,6 +5,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/MAMC-DCI/pubtatordb.svg?branch=master)](https://travis-ci.org/MAMC-DCI/pubtatordb#)
 [![Build status](https://ci.appveyor.com/api/projects/status/deltes4sus3dcj69?svg=true)](https://ci.appveyor.com/project/mamcdci/pubtatordb)
 [![Coverage Status](https://img.shields.io/codecov/c/github/mamc-dci/pubtatordb/master.svg)](https://codecov.io/github/mamc-dci/pubtatordb?branch=master)
+[![DOI](https://zenodo.org/badge/169114045.svg)](https://zenodo.org/badge/latestdoi/169114045)
 
 
 The goal of pubtatordb is to allow users to create and query a local version of the PubTator database. [PubTator](https://www.ncbi.nlm.nih.gov/CBBresearch/Lu/Demo/PubTator/) provides detailed annotations of abstracts found on PubMed. It is therefore very useful for directing research questions. While PubTator does provide an API, the use of a local database is more appropriate for high-throughput analyses. pubtatordb provides the tools necessary to download, setup, and query such a database.

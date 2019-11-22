@@ -53,7 +53,7 @@ library(pubtatordb)
 #    db_con,
 #    "gene",
 #    columns = c("PMID", "ENTREZID"),
-#    keys = C("7356", "4199"),
+#    keys = c("7356", "4199"),
 #    keytype = "ENTREZID",
 #    limit = 5
 #  )

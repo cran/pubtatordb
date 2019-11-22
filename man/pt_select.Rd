@@ -4,8 +4,14 @@
 \alias{pt_select}
 \title{Retrieve data from the PubTator database.}
 \usage{
-pt_select(db_con, table_name, columns = NULL, keys = NULL,
-  keytype = NULL, limit = Inf)
+pt_select(
+  db_con,
+  table_name,
+  columns = NULL,
+  keys = NULL,
+  keytype = NULL,
+  limit = Inf
+)
 }
 \arguments{
 \item{db_con}{A connection to the PubTator sqlite database, as created via
